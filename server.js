@@ -18,18 +18,29 @@ app.use(express.static('public'));
 
 app.get('/authenticate', async (req, res) => {
   if (req.query.link) {
-    let workspace = await WorkspaceRepository.findWorkspace(req.query.link);
+    const link = decodeURIComponent(req.query.link);
+    let workspace = await WorkspaceRepository.findWorkspace(link);
     if (workspace.length == 0)
-      workspace = await WorkspaceRepository.addWorkspace(req.query.link);
+      workspace = await WorkspaceRepository.addWorkspace(link);
+    else workspace = workspace[0];
+
+    if (workspace.code)
+      return res
+        .status(200)
+        .send(`<html><script>window.location.href="${link}"</script></html>`);
+
+    const uri = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2Fauthenticate&state=${workspace.id}&response_type=code&prompt=consent`;
+
+    return res
+      .status(200)
+      .send(`<html><script>window.location.href="${uri}"</script></html>`);
+  } else if (req.query.code) {
+    let workspace = await WorkspaceRepository.addCodeToWorkspace(
+      req.query.state,
+      req.query.code
+    );
     return res.status(200).send(workspace);
-    // return res
-    //   .status(200)
-    //   .send(
-    //     `<html><script>window.location.href="${decodeURIComponent(
-    //       req.query.link
-    //     )}"</script></html>`
-    //   );
-  } else if (req.query.code) return res.status(200).send(req.query.code);
+  }
 
   return res.status(404).send('Not found!');
 });

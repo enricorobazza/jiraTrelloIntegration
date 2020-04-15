@@ -14,10 +14,13 @@ const findWorkspace = async (url) => {
 };
 
 const addWorkspace = async (url) => {
-  console.log('Inserting: ', url);
   const workspace = await workspacesRef.add({ url });
-  console.log('Inserted', workspace);
   return { id: workspace.id, url };
 };
 
-export default { findWorkspace, addWorkspace };
+const addCodeToWorkspace = async (id, code) => {
+  const workspace = await workspacesRef.doc(id).update({ code });
+  return workspace;
+};
+
+export default { findWorkspace, addWorkspace, addCodeToWorkspace };
