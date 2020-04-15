@@ -15,6 +15,10 @@ app.use(cors({ origin: ['https://trello.com', 'http://localhost:58272'] }));
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
+app.get('/authenticate', (req, res) => {
+  res.status(200).send(req.query.code);
+});
+
 // listen for requests :)
 const listener = app.listen(process.env.PORT, function () {
   console.info(`Node Version: ${process.version}`);
