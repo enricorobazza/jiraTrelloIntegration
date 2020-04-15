@@ -21,22 +21,26 @@ t.render(function () {
 });
 
 document.getElementById('save').addEventListener('click', async function () {
-  return t.set('board', 'shared', 'link', linkSelector.value).then(function () {
+  return t.set('board', 'shared', 'lastUpdated', Date.now()).then(function () {
     return t
-      .set('board', 'shared', 'project', projectSelector.value)
+      .set('board', 'shared', 'link', linkSelector.value)
       .then(function () {
-        function openInNewTab(url) {
-          var win = window.open(url, '_blank');
-          win.focus();
-        }
+        return t
+          .set('board', 'shared', 'project', projectSelector.value)
+          .then(function () {
+            function openInNewTab(url) {
+              var win = window.open(url, '_blank');
+              win.focus();
+            }
 
-        openInNewTab(
-          `https://jiratrellointegration.herokuapp.com/authenticate?link=${encodeURIComponent(
-            linkSelector.value
-          )}`
-        );
+            openInNewTab(
+              `https://jiratrellointegration.herokuapp.com/authenticate?link=${encodeURIComponent(
+                linkSelector.value
+              )}`
+            );
 
-        t.closePopup();
+            t.closePopup();
+          });
       });
   });
 });

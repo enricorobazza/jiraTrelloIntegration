@@ -18,15 +18,17 @@ var boardButtonCallback = function (t) {
           Promise.all([
             t.get('board', 'shared', 'link'),
             t.get('board', 'shared', 'project'),
-          ]).spread(async function (savedLink, savedProject) {
+            t.get('board', 'shared', 'lastupdated'),
+          ]).spread(async function (savedLink, savedProject, lastUpdated) {
             const response = await axios.get(
               `https://jiratrellointegration.herokuapp.com/token/${encodeURIComponent(
                 savedLink
               )}`
             );
             const { id, token } = response.data;
+            let date = moment.unix(lastUpdated).format('YYYY/MM/DD HH:mm:ss');
             const newResponse = await axios.get(
-              `https://api.atlassian.com/ex/jira/${id}/rest/api/3/search?jql=project="${savedProject}"%20and%20issuetype="Subtarefa"`,
+              `https://api.atlassian.com/ex/jira/${id}/rest/api/3/search?jql=project="${savedProject}"%20and%20issuetype="Subtarefa"%20and%20created&gt;="${date}"`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -34,7 +36,6 @@ var boardButtonCallback = function (t) {
                 },
               }
             );
-
             console.log(newResponse.data);
             alert(`Link: ${savedLink}, Project: ${savedProject}`);
             tr.closePopup();
