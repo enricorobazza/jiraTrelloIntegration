@@ -18,8 +18,8 @@ app.use(express.static('public'));
 
 app.get('/authenticate', async (req, res) => {
   if (req.query.link) {
-    const workspace = await WorkspaceRepository.findWorkspace(req.query.link);
-    if (!workspace)
+    let workspace = await WorkspaceRepository.findWorkspace(req.query.link);
+    if (workspace.length == 0)
       workspace = await WorkspaceRepository.addWorkspace(req.query.link);
     return res.status(200).send(workspace);
     // return res
