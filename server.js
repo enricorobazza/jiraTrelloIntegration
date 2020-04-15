@@ -31,16 +31,16 @@ app.get('/token/:link', async (req, res) => {
       },
     }
   );
-
   const id = response.data[0].id;
-
   return res.status(200).send({ token: workspace.token, id });
 });
 
 app.get('/authenticate', async (req, res) => {
   if (req.query.link) {
     const link = decodeURIComponent(req.query.link);
-    let workspace = await WorkspaceRepository.findWorkspace(link);
+    let workspace;
+    if (!req.query.refresh)
+      workspace = await WorkspaceRepository.findWorkspace(link);
     if (!workspace) workspace = await WorkspaceRepository.addWorkspace(link);
 
     if (workspace.token)

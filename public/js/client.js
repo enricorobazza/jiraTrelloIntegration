@@ -27,18 +27,18 @@ var boardButtonCallback = function (t) {
             );
             const { id, token } = response.data;
             let date = moment.unix(lastUpdated).format('YYYY/MM/DD HH:mm:ss');
-            const newResponse = await axios.get(
-              `https://api.atlassian.com/ex/jira/${id}/rest/api/3/search?jql=project="${savedProject}"%20and%20issuetype="Subtarefa"%20and%20created&gt;="${date}"`,
-              {
+            const endpoint = `https://api.atlassian.com/ex/jira/${id}/rest/api/3/search?jql=project="${savedProject}"%20and%20issuetype="Subtarefa"%20and%20created&gt;="${date}"`;
+
+            try {
+              const newResponse = await axios.get(endpoint, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                   Accept: 'application/json',
                 },
-              }
-            );
-            console.log(newResponse.data);
-            alert(`Link: ${savedLink}, Project: ${savedProject}`);
-            tr.closePopup();
+              });
+              console.log(newResponse.data);
+              alert(`Link: ${savedLink}, Project: ${savedProject}`);
+            } catch (err) {}
           });
         },
       },
