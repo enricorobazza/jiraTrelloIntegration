@@ -70,7 +70,7 @@ app.get('/authenticate', async (req, res) => {
 });
 
 // listen for requests :)
-const listener = app.listen(8080, function () {
+const listener = app.listen(process.env.PORT || 8080, function () {
   console.info(`Node Version: ${process.version}`);
   console.log(
     'Trello Power-Up Server listening on port ' + listener.address().port
