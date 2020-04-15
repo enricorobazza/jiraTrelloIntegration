@@ -25,9 +25,11 @@ t.render(function () {
 });
 
 document.getElementById('save').addEventListener('click', function () {
+  alert(apikeySelector.value);
   return t
     .set('board', 'shared', 'apikey', apikeySelector.value)
     .then(function () {
+      alert(projectSelector.value);
       return t.set('board', 'shared', 'project', projectSelector.value);
     })
     .then(function () {
