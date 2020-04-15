@@ -20,7 +20,9 @@ app.get('/authenticate', (req, res) => {
     return res
       .status(200)
       .send(
-        `<html><script>window.location.href="${req.query.link}"</script></html>`
+        `<html><script>window.location.href="${decodeURIComponent(
+          req.query.link
+        )}"</script></html>`
       );
   } else if (req.query.code) return res.status(200).send(req.query.code);
 

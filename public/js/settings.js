@@ -31,7 +31,9 @@ document.getElementById('save').addEventListener('click', async function () {
         }
 
         openInNewTab(
-          `https://https://jiratrellointegration.herokuapp.com/authenticate?link=${linkSelector.value}`
+          `https://https://jiratrellointegration.herokuapp.com/authenticate?link=${encodeURIComponent(
+            linkSelector.value
+          )}`
         );
 
         t.closePopup();
