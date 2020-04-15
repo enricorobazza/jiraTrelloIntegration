@@ -12,32 +12,32 @@ var boardButtonCallback = function (t) {
     title: 'Jira Sync',
     items: [
       {
-        text: 'Sei lá',
-        icon: GRAY_ICON,
-        callback: (tr) => tr.navigate({ url: 'https://google.com' }),
-      },
-      {
         text: 'Sincronizar últimas tarefas',
         icon: GRAY_ICON,
-        callback: async (tr) => {
-          const savedLink = await t.get('board', 'shared', 'link');
-          const savedProject = await t.get('board', 'shared', 'project');
-          const lastUpdated = await t.get('board', 'shared', 'lastUpdated');
-          try {
-            const response = await axios.get(
-              `https://jiratrellointegration.herokuapp.com/token/${encodeURIComponent(
-                savedLink
-              )}?project="${savedProject}"&lastUpdated=${lastUpdated}`
-            );
-            if (response.data.redirect) {
-              return tr.navigate({
-                url: response.data.url,
-              });
+        callback: (tr) => {
+          Promise.all([
+            t.get('board', 'shared', 'link'),
+            t.get('board', 'shared', 'project'),
+            t.get('board', 'shared', 'lastUpdated'),
+          ]).spread(async function (savedLink, savedProject, lastUpdated) {
+            try {
+              const response = await axios.get(
+                `https://jiratrellointegration.herokuapp.com/token/${encodeURIComponent(
+                  savedLink
+                )}?project="${savedProject}"&lastUpdated=${lastUpdated}`
+              );
+
+              if (response.data.redirect) {
+                return t.popup({
+                  title: 'Authorization',
+                  url: response.data.url,
+                });
+              }
+              console.log(response.data);
+            } catch (err) {
+              alert('Erro ao carregar!');
             }
-            console.log(response.data);
-          } catch (err) {
-            alert('Erro ao carregar!');
-          }
+          });
         },
       },
       {
