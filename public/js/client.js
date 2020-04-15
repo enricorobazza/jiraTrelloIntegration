@@ -24,7 +24,7 @@ var boardButtonCallback = function (t) {
               const response = await axios.get(
                 `https://jiratrellointegration.herokuapp.com/token/${encodeURIComponent(
                   savedLink
-                )}?project="${project}"&lastUpdated=${lastUpdated}`
+                )}?project="${savedProject}"&lastUpdated=${lastUpdated}`
               );
 
               if (response.data.redirect) {
