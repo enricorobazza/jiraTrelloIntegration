@@ -26,7 +26,7 @@ var boardButtonCallback = function (t) {
             );
             const { id, token } = response.data;
             const newResponse = await axios.get(
-              `https://api.atlassian.com/ex/jira/${id}/rest/api/3/issue/EAD-111`,
+              `https://api.atlassian.com/ex/jira/${id}/rest/api/3/search?jql=project="${savedProject}"%20and%20issuetype="Subtarefa"`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
