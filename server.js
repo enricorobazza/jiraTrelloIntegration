@@ -30,7 +30,8 @@ app.get('/token/:link', async (req, res) => {
 
   if (!workspace.token) {
     /////// NÃO CADASTRADO, TEM QUE REDIRECIONAR PRA PEGAR AUTORIZAÇÃO E DEPOIS RETORNAR
-    return res.status(200).send({ redirect: true });
+    const url = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2Fauthenticate&state=${workspace.id}&response_type=code&prompt=consent`;
+    return res.status(200).send({ redirect: true, url });
   }
 
   let id;
@@ -48,7 +49,8 @@ app.get('/token/:link', async (req, res) => {
     id = response.data[0].id;
   } catch (err) {
     ///// TOKEN EXPIROU, ABRIR PARA PEGAR AUTORIZAÇÃO E DEPOIS RETORNAR
-    return res.status(200).send({ redirect: true });
+    const url = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2Fauthenticate&state=${workspace.id}&response_type=code&prompt=consent`;
+    return res.status(200).send({ redirect: true, url });
   }
 
   const { project, lastUpdated } = req.query;

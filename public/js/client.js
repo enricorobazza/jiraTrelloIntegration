@@ -32,11 +32,7 @@ var boardButtonCallback = function (t) {
                   var win = window.open(url, '_blank');
                   win.focus();
                 }
-                openInNewTab(
-                  `https://jiratrellointegration.herokuapp.com/authenticate?refresh=true&link=${encodeURIComponent(
-                    savedLink
-                  )}`
-                );
+                openInNewTab(response.data.url);
                 return;
               }
               console.log(response.data);
