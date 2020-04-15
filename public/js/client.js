@@ -37,6 +37,7 @@ var boardButtonCallback = function (t) {
 
             console.log(newResponse.data);
             alert(`Link: ${savedLink}, Project: ${savedProject}`);
+            t.closePopup();
           });
         },
       },
