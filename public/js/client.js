@@ -20,7 +20,7 @@ var boardButtonCallback = function (t) {
             accentColor: '#F2D600', // Optional color for the modal header
             height: 500, // Initial height for iframe; not used if fullscreen is true
             fullscreen: true, // Whether the modal should stretch to take up the whole screen
-            callback: () => alert('alo!!'), // optional function called if user closes modal (via `X` or escape)
+            callback: () => console.log('closing modal'), // optional function called if user closes modal (via `X` or escape)
             title: 'Hello, Modal!', // Optional title for modal header
             // You can add up to 3 action buttons on the modal header - max 1 on the right side.
             actions: [

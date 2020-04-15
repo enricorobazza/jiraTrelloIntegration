@@ -3,20 +3,20 @@
 var Promise = TrelloPowerUp.Promise;
 var t = TrelloPowerUp.iframe();
 
-var fruitSelector = document.getElementById('fruit');
-var vegetableSelector = document.getElementById('vegetable');
+var apikeySelector = document.getElementById('apikey');
+var projectSelector = document.getElementById('project');
 
 t.render(function () {
   return Promise.all([
-    t.get('board', 'shared', 'fruit'),
-    t.get('board', 'private', 'vegetable'),
+    t.get('board', 'shared', 'apikey'),
+    t.get('board', 'shared', 'project'),
   ])
-    .spread(function (savedFruit, savedVegetable) {
-      if (savedFruit && /[a-z]+/.test(savedFruit)) {
-        fruitSelector.value = savedFruit;
+    .spread(function (savedApiKey, savedProject) {
+      if (savedApiKey && /[a-z]+/.test(savedApiKey)) {
+        apikeySelector.value = savedApiKey;
       }
-      if (savedVegetable && /[a-z]+/.test(savedVegetable)) {
-        vegetableSelector.value = savedVegetable;
+      if (savedProject && /[a-z]+/.test(savedProject)) {
+        projectSelector.value = savedProject;
       }
     })
     .then(function () {
@@ -26,9 +26,9 @@ t.render(function () {
 
 document.getElementById('save').addEventListener('click', function () {
   return t
-    .set('board', 'private', 'vegetable', vegetableSelector.value)
+    .set('board', 'shared', 'apikey', apikeySelector.value)
     .then(function () {
-      return t.set('board', 'shared', 'fruit', fruitSelector.value);
+      return t.set('board', 'shared', 'project', projectSelector.value);
     })
     .then(function () {
       t.closePopup();
