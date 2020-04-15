@@ -18,27 +18,31 @@ var boardButtonCallback = function (t) {
           Promise.all([
             t.get('board', 'shared', 'link'),
             t.get('board', 'shared', 'project'),
-            t.get('board', 'shared', 'lastupdated'),
+            t.get('board', 'shared', 'lastUpdated'),
           ]).spread(async function (savedLink, savedProject, lastUpdated) {
-            const response = await axios.get(
-              `https://jiratrellointegration.herokuapp.com/token/${encodeURIComponent(
-                savedLink
-              )}`
-            );
-            const { id, token } = response.data;
-            let date = moment.unix(lastUpdated).format('YYYY/MM/DD HH:mm:ss');
-            const endpoint = `https://api.atlassian.com/ex/jira/${id}/rest/api/3/search?jql=project="${savedProject}"%20and%20issuetype="Subtarefa"%20and%20created&gt;="${date}"`;
-
             try {
-              const newResponse = await axios.get(endpoint, {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  Accept: 'application/json',
-                },
-              });
-              console.log(newResponse.data);
-              alert(`Link: ${savedLink}, Project: ${savedProject}`);
-            } catch (err) {}
+              const response = await axios.get(
+                `https://jiratrellointegration.herokuapp.com/token/${encodeURIComponent(
+                  savedLink
+                )}?project="${project}"&lastUpdated=${lastUpdated}`
+              );
+
+              if (response.data.redirect) {
+                function openInNewTab(url) {
+                  var win = window.open(url, '_blank');
+                  win.focus();
+                }
+                openInNewTab(
+                  `https://jiratrellointegration.herokuapp.com/authenticate?refresh=true&link=${encodeURIComponent(
+                    savedLink
+                  )}`
+                );
+                return;
+              }
+              console.log(response.data);
+            } catch (err) {
+              alert('Erro ao carregar!');
+            }
           });
         },
       },
