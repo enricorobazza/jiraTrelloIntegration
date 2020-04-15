@@ -36,10 +36,7 @@ var boardButtonCallback = function (t) {
                     const response = await axios.get(
                       `https://jiratrellointegration.herokuapp.com/code/${encodeURIComponent(
                         savedLink
-                      )}`,
-                      {
-                        with,
-                      }
+                      )}`
                     );
                     alert(response.code);
                     // const response = await axios.get(
