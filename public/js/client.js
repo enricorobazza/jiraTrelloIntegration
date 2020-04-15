@@ -28,7 +28,10 @@ var boardButtonCallback = function (t) {
               );
 
               if (response.data.redirect) {
-                window.open(response.data.url, '_blank');
+                t.popup({
+                  title: 'Authorization',
+                  url: response.data.url,
+                });
                 return;
               }
               console.log(response.data);
