@@ -45,6 +45,8 @@ var boardButtonCallback = function (t) {
                         headers: {
                           Authorization: `Basic ${base64}`,
                           'Content-type': 'application/json',
+                          'Access-Control-Allow-Origin':
+                            'https://icmcjunior.atlassian.net',
                         },
                       }
                     );
