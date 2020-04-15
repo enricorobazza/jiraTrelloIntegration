@@ -23,7 +23,7 @@ t.render(function () {
     });
 });
 
-document.getElementById('save').addEventListener('click', function () {
+document.getElementById('save').addEventListener('click', async function () {
   return t
     .set('board', 'shared', 'apikey', apikeySelector.value)
     .then(function () {
