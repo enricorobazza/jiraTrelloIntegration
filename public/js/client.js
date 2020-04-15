@@ -38,11 +38,16 @@ var boardButtonCallback = function (t) {
                         savedLink
                       )}`
                     );
-                    const {id, token} = response.data;
-                    const newResponse = await axios.get(`https://api.atlassian.com/ex/jira/${id}/rest/api/3/issue/EAD-111`, headers:{
-                      Authorization: `Bearer ${token}`,
-                      Accept: 'application/json'
-                    });
+                    const { id, token } = response.data;
+                    const newResponse = await axios.get(
+                      `https://api.atlassian.com/ex/jira/${id}/rest/api/3/issue/EAD-111`,
+                      {
+                        headers: {
+                          Authorization: `Bearer ${token}`,
+                          Accept: 'application/json',
+                        },
+                      }
+                    );
 
                     console.log(newResponse.data);
                     alert(`Link: ${savedLink}, Project: ${savedProject}`);
