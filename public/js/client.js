@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 var Promise = TrelloPowerUp.Promise;
 
 var GLITCH_ICON =
@@ -32,8 +34,20 @@ var boardButtonCallback = function (t) {
                   Promise.all([
                     t.get('board', 'shared', 'apikey'),
                     t.get('board', 'shared', 'project'),
-                  ]).spread(function (savedApiKey, savedProject) {
-                    alert(`APIKEY: ${savedApiKey}, Project: ${savedProject}`);
+                    t.get('board', 'shared', 'email'),
+                  ]).spread(async function (
+                    savedApiKey,
+                    savedProject,
+                    savedEmail
+                  ) {
+                    const base64 = btoa(`${savedEmail}:${savedApiKey}`);
+                    const response = await axios.get(
+                      'http://dummy.restapiexample.com/api/v1/employees'
+                    );
+                    alert(response.status);
+                    alert(
+                      `APIKEY: ${savedApiKey}, Project: ${savedProject}, Email: ${savedEmail}`
+                    );
                   });
                 },
               },
