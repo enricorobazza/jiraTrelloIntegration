@@ -100,8 +100,8 @@ TrelloPowerUp.initialize(
         {
           // or we can also have a button that is just a simple url
           // clicking it will open a new tab at the provided url
-          icon: WHITE_ICON,
-          text: 'URL',
+          icon: GLITCH_ICON,
+          text: 'AUTHORIZATE',
           url: `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2F&state=${Date.now()}&response_type=code&prompt=consent`,
           target: 'Inspiring Boards', // optional target for above url
         },
