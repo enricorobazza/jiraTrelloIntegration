@@ -26,9 +26,16 @@ var boardButtonCallback = function (t) {
             actions: [
               {
                 icon: GRAY_ICON,
-                url: 'https://google.com', // Opens the URL passed to it.
                 alt: 'Leftmost',
                 position: 'left',
+                callback: (tr) => {
+                  Promise.all([
+                    t.get('board', 'shared', 'apikey'),
+                    t.get('board', 'shared', 'project'),
+                  ]).spread(function (savedApiKey, savedProject) {
+                    alert(`APIKEY: ${savedApiKey}, Project: ${savedProject}`);
+                  });
+                },
               },
               {
                 icon: GRAY_ICON,

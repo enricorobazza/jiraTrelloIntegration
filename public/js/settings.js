@@ -12,12 +12,8 @@ t.render(function () {
     t.get('board', 'shared', 'project'),
   ])
     .spread(function (savedApiKey, savedProject) {
-      if (savedApiKey && /[a-z]+/.test(savedApiKey)) {
-        apikeySelector.value = savedApiKey;
-      }
-      if (savedProject && /[a-z]+/.test(savedProject)) {
-        projectSelector.value = savedProject;
-      }
+      apikeySelector.value = savedApiKey;
+      projectSelector.value = savedProject;
     })
     .then(function () {
       t.sizeTo('#content').done();
@@ -25,11 +21,9 @@ t.render(function () {
 });
 
 document.getElementById('save').addEventListener('click', function () {
-  alert(apikeySelector.value);
   return t
     .set('board', 'shared', 'apikey', apikeySelector.value)
     .then(function () {
-      alert(projectSelector.value);
       return t.set('board', 'shared', 'project', projectSelector.value);
     })
     .then(function () {
