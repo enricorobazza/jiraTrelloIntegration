@@ -102,7 +102,8 @@ TrelloPowerUp.initialize(
           // clicking it will open a new tab at the provided url
           icon: WHITE_ICON,
           text: 'URL',
-          url: 'https://trello.com/inspiration',
+          url:
+            'https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2F&state=${YOUR_USER_BOUND_VALUE}&response_type=code&prompt=consent',
           target: 'Inspiring Boards', // optional target for above url
         },
       ];
