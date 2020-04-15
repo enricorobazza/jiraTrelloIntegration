@@ -1,0 +1,17 @@
+image: node:10.16.0
+
+stages:
+  - deploy
+
+before_script:
+  - npm install
+
+production:
+  stage: deploy
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=jiratrellointegration --api-key=$HEROKU_API_KEY
+  only:
+    - master
