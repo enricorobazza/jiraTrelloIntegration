@@ -12,6 +12,11 @@ var boardButtonCallback = function (t) {
     title: 'Jira Sync',
     items: [
       {
+        text: 'Sei lá',
+        icon: GRAY_ICON,
+        callback: (tr) => tr.navigate({ url: 'https://google.com' }),
+      },
+      {
         text: 'Sincronizar últimas tarefas',
         icon: GRAY_ICON,
         callback: async (tr) => {
