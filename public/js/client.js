@@ -38,17 +38,23 @@ var boardButtonCallback = function (t) {
                         savedLink
                       )}`
                     );
-                    alert(response.code);
-                    // const response = await axios.get(
-                    //   'https://icmcjunior.atlassian.net/rest/api/3/issue/EAD-111',
-                    //   {
-                    //     headers: {
-                    //       Authorization: `Basic ${base64}`,
-                    //       'Content-type': 'application/json',
-                    //       'Access-Control-Allow-Origin': '*',
-                    //     },
-                    //   }
-                    // );
+                    // alert(response.data);
+
+                    const token = await axios.post(
+                      'https://auth.atlassian.com/oauth/token',
+                      {
+                        grant_type: 'authorization_code',
+                        client_id: 'vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5',
+                        client_secret:
+                          'vh34u1Ln5Wx1WTdicPgx7AzI2WcBWT1qA066e4Z8j12FMBihEHRCyF1TccK3oa_1',
+                        code: response.data,
+                        redirect_uri:
+                          'https://jiratrellointegration.herokuapp.com/authenticate',
+                      }
+                    );
+
+                    console.log(token);
+
                     alert(
                       `APIKEY: ${savedApiKey}, Project: ${savedProject}, Email: ${savedEmail}, ISSUE ID: ${response.id}`
                     );
