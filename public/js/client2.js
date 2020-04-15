@@ -25,8 +25,7 @@ var boardButtonCallback = function (t) {
               )}?project="${savedProject}"&lastUpdated=${lastUpdated}`
             );
             if (response.data.redirect) {
-              return tr.popup({
-                title: 'Authorization',
+              return tr.navigate({
                 url: response.data.url,
               });
             }
