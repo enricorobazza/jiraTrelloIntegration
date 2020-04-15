@@ -39,11 +39,10 @@ app.get('/authenticate', async (req, res) => {
   if (req.query.link) {
     const link = decodeURIComponent(req.query.link);
     let workspace;
-    if (!req.query.refresh)
-      workspace = await WorkspaceRepository.findWorkspace(link);
+    workspace = await WorkspaceRepository.findWorkspace(link);
     if (!workspace) workspace = await WorkspaceRepository.addWorkspace(link);
 
-    if (workspace.token)
+    if (workspace.token && !req.query.refresh)
       return res
         .status(200)
         .send(`<html><script>window.location.href="${link}"</script></html>`);
