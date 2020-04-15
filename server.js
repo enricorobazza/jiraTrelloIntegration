@@ -17,11 +17,11 @@ app.use(cors({ origin: ['https://trello.com'] }));
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
-app.get('/code/:link', async (req, res) => {
+app.get('/token/:link', async (req, res) => {
   if (!req.params.link) return res.status(404).send('Invalid.');
   const link = decodeURIComponent(req.params.link);
   const workspace = await WorkspaceRepository.findWorkspace(link);
-  return res.status(200).send(workspace.code);
+  return res.status(200).send(workspace.token);
 });
 
 app.get('/authenticate', async (req, res) => {

@@ -34,26 +34,11 @@ var boardButtonCallback = function (t) {
                     t.get('board', 'shared', 'project'),
                   ]).spread(async function (savedLink, savedProject) {
                     const response = await axios.get(
-                      `https://jiratrellointegration.herokuapp.com/code/${encodeURIComponent(
+                      `https://jiratrellointegration.herokuapp.com/token/${encodeURIComponent(
                         savedLink
                       )}`
                     );
-                    // alert(response.data);
-
-                    const token = await axios.post(
-                      'https://auth.atlassian.com/oauth/token',
-                      {
-                        grant_type: 'authorization_code',
-                        client_id: 'vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5',
-                        client_secret:
-                          'vh34u1Ln5Wx1WTdicPgx7AzI2WcBWT1qA066e4Z8j12FMBihEHRCyF1TccK3oa_1',
-                        code: response.data,
-                        redirect_uri:
-                          'https://jiratrellointegration.herokuapp.com/authenticate',
-                      }
-                    );
-
-                    console.log(token);
+                    console.log(response.data);
                     alert(`Link: ${savedLink}, Project: ${savedProject}`);
                   });
                 },
