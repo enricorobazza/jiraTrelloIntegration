@@ -34,7 +34,12 @@ var boardButtonCallback = function (t) {
                     t.get('board', 'shared', 'project'),
                   ]).spread(async function (savedLink, savedProject) {
                     const response = await axios.get(
-                      `https://jiratrellointegration.herokuapp.com/code/${savedLink}`
+                      `https://jiratrellointegration.herokuapp.com/code/${encodeURIComponent(
+                        savedLink
+                      )}`,
+                      {
+                        with,
+                      }
                     );
                     alert(response.code);
                     // const response = await axios.get(

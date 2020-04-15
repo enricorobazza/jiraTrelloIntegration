@@ -18,7 +18,8 @@ app.use(express.static('public'));
 
 app.get('/code/:link', async (req, res) => {
   if (!req.params.link) return res.status(404).send('Invalid.');
-  const workspace = await WorkspaceRepository.findWorkspace(req.params.link);
+  const link = decodeURIComponent(req.params.link);
+  const workspace = await WorkspaceRepository.findWorkspace(link);
   return res.status(200).send(workspace.code);
 });
 
