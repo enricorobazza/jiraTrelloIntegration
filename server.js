@@ -21,7 +21,20 @@ app.get('/token/:link', async (req, res) => {
   if (!req.params.link) return res.status(404).send('Invalid.');
   const link = decodeURIComponent(req.params.link);
   const workspace = await WorkspaceRepository.findWorkspace(link);
-  return res.status(200).send(workspace.token);
+
+  const response = await axios.get(
+    'https://api.atlassian.com/oauth/token/accessible-resources',
+    {
+      headers: {
+        Authorization: `Bearer ${workspace.token}`,
+        Accept: 'application/json',
+      },
+    }
+  );
+
+  const id = response.data[0].id;
+
+  return res.status(200).send({ token: workspace.token, id });
 });
 
 app.get('/authenticate', async (req, res) => {
