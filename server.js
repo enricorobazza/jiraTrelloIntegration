@@ -3,6 +3,7 @@
 import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
+import * as WorkspaceRepository from './repositories/workspaceRepository';
 
 const app = express();
 
@@ -10,20 +11,24 @@ const app = express();
 app.use(compression());
 
 // your manifest must have appropriate CORS headers, you could also use '*'
-app.use(cors({ origin: ['https://trello.com', 'http://localhost:58272'] }));
+app.use(cors({ origin: ['https://trello.com'] }));
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
-app.get('/authenticate', (req, res) => {
+app.get('/authenticate', async (req, res) => {
   if (req.query.link) {
-    return res
-      .status(200)
-      .send(
-        `<html><script>window.location.href="${decodeURIComponent(
-          req.query.link
-        )}"</script></html>`
-      );
+    const workspace = await WorkspaceRepository.findWorkspace(req.query.link);
+    if (!workspace)
+      workspace = await WorkspaceRepository.addWorkspace(req.query.link);
+    return res.status(200).send(workspace);
+    // return res
+    //   .status(200)
+    //   .send(
+    //     `<html><script>window.location.href="${decodeURIComponent(
+    //       req.query.link
+    //     )}"</script></html>`
+    //   );
   } else if (req.query.code) return res.status(200).send(req.query.code);
 
   return res.status(404).send('Not found!');
