@@ -16,13 +16,17 @@ app.use(cors({ origin: ['https://trello.com'] }));
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
+app.get('/code/:link', async (req, res) => {
+  if (!req.params.link) return res.status(404).send('Invalid.');
+  const workspace = await WorkspaceRepository.findWorkspace(req.params.link);
+  return res.status(200).send(workspace.code);
+});
+
 app.get('/authenticate', async (req, res) => {
   if (req.query.link) {
     const link = decodeURIComponent(req.query.link);
     let workspace = await WorkspaceRepository.findWorkspace(link);
-    if (workspace.length == 0)
-      workspace = await WorkspaceRepository.addWorkspace(link);
-    else workspace = workspace[0];
+    if (!workspace) workspace = await WorkspaceRepository.addWorkspace(link);
 
     if (workspace.code)
       return res

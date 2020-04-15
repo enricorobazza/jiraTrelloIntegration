@@ -10,7 +10,10 @@ const findWorkspace = async (url) => {
     id: elem.id,
   }));
 
-  return docs.filter((workspace) => workspace.url === url);
+  const workspaces = docs.filter((workspace) => workspace.url === url);
+
+  if (workspaces.length === 0) return false;
+  else return workspaces[0];
 };
 
 const addWorkspace = async (url) => {

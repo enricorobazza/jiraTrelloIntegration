@@ -30,25 +30,23 @@ var boardButtonCallback = function (t) {
                 position: 'left',
                 callback: (tr) => {
                   Promise.all([
-                    t.get('board', 'shared', 'apikey'),
+                    t.get('board', 'shared', 'link'),
                     t.get('board', 'shared', 'project'),
-                    t.get('board', 'shared', 'email'),
-                  ]).spread(async function (
-                    savedApiKey,
-                    savedProject,
-                    savedEmail
-                  ) {
-                    const base64 = btoa(`${savedEmail}:${savedApiKey}`);
+                  ]).spread(async function (savedLink, savedProject) {
                     const response = await axios.get(
-                      'https://icmcjunior.atlassian.net/rest/api/3/issue/EAD-111',
-                      {
-                        headers: {
-                          Authorization: `Basic ${base64}`,
-                          'Content-type': 'application/json',
-                          'Access-Control-Allow-Origin': '*',
-                        },
-                      }
+                      `https://jiratrellointegration.herokuapp.com/code/${savedLink}`
                     );
+                    alert(response.code);
+                    // const response = await axios.get(
+                    //   'https://icmcjunior.atlassian.net/rest/api/3/issue/EAD-111',
+                    //   {
+                    //     headers: {
+                    //       Authorization: `Basic ${base64}`,
+                    //       'Content-type': 'application/json',
+                    //       'Access-Control-Allow-Origin': '*',
+                    //     },
+                    //   }
+                    // );
                     alert(
                       `APIKEY: ${savedApiKey}, Project: ${savedProject}, Email: ${savedEmail}, ISSUE ID: ${response.id}`
                     );
