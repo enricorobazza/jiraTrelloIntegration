@@ -3,6 +3,7 @@
 import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
+import axios from 'axios';
 import WorkspaceRepository from './repositories/workspaceRepository';
 
 const app = express();
@@ -29,7 +30,7 @@ app.get('/authenticate', async (req, res) => {
     let workspace = await WorkspaceRepository.findWorkspace(link);
     if (!workspace) workspace = await WorkspaceRepository.addWorkspace(link);
 
-    if (workspace.code)
+    if (workspace.token)
       return res
         .status(200)
         .send(`<html><script>window.location.href="${link}"</script></html>`);
@@ -40,18 +41,36 @@ app.get('/authenticate', async (req, res) => {
       .status(200)
       .send(`<html><script>window.location.href="${uri}"</script></html>`);
   } else if (req.query.code) {
-    let workspace = await WorkspaceRepository.addCodeToWorkspace(
-      req.query.state,
-      req.query.code
-    );
-    return res.status(200).send(workspace);
+    try {
+      const response = await axios.post(
+        'https://auth.atlassian.com/oauth/token',
+        {
+          grant_type: 'authorization_code',
+          client_id: 'vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5',
+          client_secret:
+            'vh34u1Ln5Wx1WTdicPgx7AzI2WcBWT1qA066e4Z8j12FMBihEHRCyF1TccK3oa_1',
+          code: req.query.code,
+          redirect_uri:
+            'https://jiratrellointegration.herokuapp.com/authenticate',
+        }
+      );
+
+      const token = response.data['access_token'];
+      const workspace = await WorkspaceRepository.addTokenToWorkspace(
+        req.query.state,
+        token
+      );
+      return res.status(200).send(workspace);
+    } catch (err) {
+      return res.status(404).send('Code incorrect!');
+    }
   }
 
   return res.status(404).send('Not found!');
 });
 
 // listen for requests :)
-const listener = app.listen(process.env.PORT, function () {
+const listener = app.listen(8080, function () {
   console.info(`Node Version: ${process.version}`);
   console.log(
     'Trello Power-Up Server listening on port ' + listener.address().port

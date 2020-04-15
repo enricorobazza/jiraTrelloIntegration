@@ -21,9 +21,9 @@ const addWorkspace = async (url) => {
   return { id: workspace.id, url };
 };
 
-const addCodeToWorkspace = async (id, code) => {
-  const workspace = await workspacesRef.doc(id).update({ code });
+const addTokenToWorkspace = async (id, token) => {
+  const workspace = await workspacesRef.doc(id).update({ token });
   return workspace;
 };
 
-export default { findWorkspace, addWorkspace, addCodeToWorkspace };
+export default { findWorkspace, addWorkspace, addTokenToWorkspace };
