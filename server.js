@@ -3,7 +3,7 @@
 import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
-import * as WorkspaceRepository from './repositories/workspaceRepository';
+import WorkspaceRepository from './repositories/workspaceRepository';
 
 const app = express();
 
