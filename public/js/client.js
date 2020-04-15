@@ -12,69 +12,44 @@ var boardButtonCallback = function (t) {
     title: 'Popup List Example',
     items: [
       {
-        text: 'Open Modal',
-        callback: function (t) {
-          return t.modal({
-            url: './modal.html', // The URL to load for the iframe
-            args: { text: 'Hello', fullscreen: true }, // Optional args to access later with t.arg('text') on './modal.html'
-            accentColor: '#F2D600', // Optional color for the modal header
-            height: 500, // Initial height for iframe; not used if fullscreen is true
-            fullscreen: true, // Whether the modal should stretch to take up the whole screen
-            callback: () => console.log('closing modal'), // optional function called if user closes modal (via `X` or escape)
-            title: 'Hello, Modal!', // Optional title for modal header
-            // You can add up to 3 action buttons on the modal header - max 1 on the right side.
-            actions: [
+        text: 'Get Data',
+        icon: GRAY_ICON,
+        callback: (tr) => {
+          Promise.all([
+            t.get('board', 'shared', 'link'),
+            t.get('board', 'shared', 'project'),
+          ]).spread(async function (savedLink, savedProject) {
+            const response = await axios.get(
+              `https://jiratrellointegration.herokuapp.com/token/${encodeURIComponent(
+                savedLink
+              )}`
+            );
+            const { id, token } = response.data;
+            const newResponse = await axios.get(
+              `https://api.atlassian.com/ex/jira/${id}/rest/api/3/issue/EAD-111`,
               {
-                icon: GRAY_ICON,
-                alt: 'Leftmost',
-                position: 'left',
-                callback: (tr) => {
-                  Promise.all([
-                    t.get('board', 'shared', 'link'),
-                    t.get('board', 'shared', 'project'),
-                  ]).spread(async function (savedLink, savedProject) {
-                    const response = await axios.get(
-                      `https://jiratrellointegration.herokuapp.com/token/${encodeURIComponent(
-                        savedLink
-                      )}`
-                    );
-                    const { id, token } = response.data;
-                    const newResponse = await axios.get(
-                      `https://api.atlassian.com/ex/jira/${id}/rest/api/3/issue/EAD-111`,
-                      {
-                        headers: {
-                          Authorization: `Bearer ${token}`,
-                          Accept: 'application/json',
-                        },
-                      }
-                    );
-
-                    console.log(newResponse.data);
-                    alert(`Link: ${savedLink}, Project: ${savedProject}`);
-                  });
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  Accept: 'application/json',
                 },
-              },
-              {
-                icon: GRAY_ICON,
-                callback: (tr) =>
-                  tr.popup({
-                    // Callback to be called when user clicks the action button.
-                    title: 'Settings',
-                    url: './settings.html',
-                    height: 164,
-                  }),
-                alt: 'Second from left',
-                position: 'left',
-              },
-              {
-                icon: GRAY_ICON,
-                callback: () => console.log('🏎'),
-                alt: 'Right side',
-                position: 'right',
-              },
-            ],
+              }
+            );
+
+            console.log(newResponse.data);
+            alert(`Link: ${savedLink}, Project: ${savedProject}`);
           });
         },
+      },
+      {
+        text: 'Settings',
+        icon: GRAY_ICON,
+        callback: (tr) =>
+          tr.popup({
+            // Callback to be called when user clicks the action button.
+            title: 'Settings',
+            url: './settings.html',
+            height: 164,
+          }),
       },
     ],
   });
@@ -95,17 +70,6 @@ TrelloPowerUp.initialize(
           text: 'Popup',
           condition: 'always',
           callback: boardButtonCallback,
-        },
-        {
-          // or we can also have a button that is just a simple url
-          // clicking it will open a new tab at the provided url
-          icon: GLITCH_ICON,
-          text: 'AUTHORIZATE',
-          url: `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2Fauthenticate&state=${Date.now()}&response_type=code&prompt=consent`,
-          target: 'Inspiring Boards', // optional target for above url
-          callback: () => {
-            alert('autorizado!!');
-          },
         },
       ];
     },
