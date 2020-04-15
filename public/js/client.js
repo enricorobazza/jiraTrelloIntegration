@@ -54,10 +54,7 @@ var boardButtonCallback = function (t) {
                     );
 
                     console.log(token);
-
-                    alert(
-                      `APIKEY: ${savedApiKey}, Project: ${savedProject}, Email: ${savedEmail}, ISSUE ID: ${response.id}`
-                    );
+                    alert(`Link: ${savedLink}, Project: ${savedProject}`);
                   });
                 },
               },
