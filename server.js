@@ -16,7 +16,15 @@ app.use(cors({ origin: ['https://trello.com', 'http://localhost:58272'] }));
 app.use(express.static('public'));
 
 app.get('/authenticate', (req, res) => {
-  res.status(200).send(req.query.code);
+  if (req.query.link) {
+    return res
+      .status(200)
+      .send(
+        `<html><script>window.location.href="${req.query.link}"</script></html>`
+      );
+  } else if (req.query.code) return res.status(200).send(req.query.code);
+
+  return res.status(404).send('Not found!');
 });
 
 // listen for requests :)

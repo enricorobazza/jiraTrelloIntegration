@@ -3,20 +3,17 @@
 var Promise = TrelloPowerUp.Promise;
 var t = TrelloPowerUp.iframe();
 
-var emailSelector = document.getElementById('email');
-var apikeySelector = document.getElementById('apikey');
+var linkSelector = document.getElementById('link');
 var projectSelector = document.getElementById('project');
 
 t.render(function () {
   return Promise.all([
-    t.get('board', 'shared', 'email'),
-    t.get('board', 'shared', 'apikey'),
+    t.get('board', 'shared', 'link'),
     t.get('board', 'shared', 'project'),
   ])
-    .spread(function (savedEmail, savedApiKey, savedProject) {
-      apikeySelector.value = savedApiKey;
+    .spread(function (savedLink, savedProject) {
+      linkSelector.value = savedLink;
       projectSelector.value = savedProject;
-      emailSelector.value = savedEmail;
     })
     .then(function () {
       t.sizeTo('#content').done();
@@ -24,17 +21,20 @@ t.render(function () {
 });
 
 document.getElementById('save').addEventListener('click', async function () {
-  return t
-    .set('board', 'shared', 'apikey', apikeySelector.value)
-    .then(function () {
-      return t
-        .set('board', 'shared', 'project', projectSelector.value)
-        .then(function () {
-          return t
-            .set('board', 'shared', 'email', emailSelector.value)
-            .then(function () {
-              t.closePopup();
-            });
-        });
-    });
+  return t.set('board', 'shared', 'link', linkSelector.value).then(function () {
+    return t
+      .set('board', 'shared', 'project', projectSelector.value)
+      .then(function () {
+        function openInNewTab(url) {
+          var win = window.open(url, '_blank');
+          win.focus();
+        }
+
+        openInNewTab(
+          `https://https://jiratrellointegration.herokuapp.com/authenticate?link=${linkSelector.value}`
+        );
+
+        t.closePopup();
+      });
+  });
 });
