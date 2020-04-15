@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 var Promise = TrelloPowerUp.Promise;
 
 var GLITCH_ICON =
