@@ -36,7 +36,7 @@ var boardButtonCallback = function (t) {
                   tr.popup({
                     // Callback to be called when user clicks the action button.
                     title: 'Settings',
-                    url: 'https://google.com',
+                    url: './settings.html',
                     height: 164,
                   }),
                 alt: 'Second from left',
