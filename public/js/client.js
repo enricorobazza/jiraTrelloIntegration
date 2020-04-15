@@ -9,10 +9,10 @@ var WHITE_ICON =
 
 var boardButtonCallback = function (t) {
   return t.popup({
-    title: 'Popup List Example',
+    title: 'Jira Sync',
     items: [
       {
-        text: 'Get Data',
+        text: 'Sincronizar últimas tarefas',
         icon: GRAY_ICON,
         callback: (tr) => {
           Promise.all([
@@ -37,12 +37,12 @@ var boardButtonCallback = function (t) {
 
             console.log(newResponse.data);
             alert(`Link: ${savedLink}, Project: ${savedProject}`);
-            t.closePopup();
+            tr.closePopup();
           });
         },
       },
       {
-        text: 'Settings',
+        text: 'Configurações',
         icon: GRAY_ICON,
         callback: (tr) =>
           tr.popup({
@@ -68,7 +68,7 @@ TrelloPowerUp.initialize(
           // we can either provide a button that has a callback function
           // that callback function should probably open a popup, overlay, or boardBar
           icon: WHITE_ICON,
-          text: 'Popup',
+          text: 'Jira Sync',
           condition: 'always',
           callback: boardButtonCallback,
         },
