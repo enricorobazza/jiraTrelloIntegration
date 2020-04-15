@@ -28,11 +28,7 @@ var boardButtonCallback = function (t) {
               );
 
               if (response.data.redirect) {
-                function openInNewTab(url) {
-                  var win = window.open(url, '_blank');
-                  win.focus();
-                }
-                openInNewTab(response.data.url);
+                window.open(response.data.url, '_blank');
                 return;
               }
               console.log(response.data);
