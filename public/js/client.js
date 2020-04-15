@@ -40,11 +40,16 @@ var boardButtonCallback = function (t) {
                   ) {
                     const base64 = btoa(`${savedEmail}:${savedApiKey}`);
                     const response = await axios.get(
-                      'http://dummy.restapiexample.com/api/v1/employees'
+                      'https://icmcjunior.atlassian.net/rest/api/3/issue/EAD-111',
+                      {
+                        headers: {
+                          Authorization: `Basic ${base64}`,
+                          'Content-type': 'application/json',
+                        },
+                      }
                     );
-                    alert(response.status);
                     alert(
-                      `APIKEY: ${savedApiKey}, Project: ${savedProject}, Email: ${savedEmail}`
+                      `APIKEY: ${savedApiKey}, Project: ${savedProject}, Email: ${savedEmail}, ISSUE ID: ${response.id}`
                     );
                   });
                 },

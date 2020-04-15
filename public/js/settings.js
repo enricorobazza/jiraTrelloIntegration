@@ -27,13 +27,14 @@ document.getElementById('save').addEventListener('click', async function () {
   return t
     .set('board', 'shared', 'apikey', apikeySelector.value)
     .then(function () {
-      return t.set('board', 'shared', 'project', projectSelector.value);
-    })
-    .then(function () {
       return t
-        .set('board', 'shared', 'email', emailSelector.value)
+        .set('board', 'shared', 'project', projectSelector.value)
         .then(function () {
-          t.closePopup();
+          return t
+            .set('board', 'shared', 'email', emailSelector.value)
+            .then(function () {
+              t.closePopup();
+            });
         });
     });
 });
