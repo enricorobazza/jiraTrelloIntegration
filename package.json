@@ -1,0 +1,25 @@
+{
+  "name": "jiratrelloautomation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node -r esm server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/icmcjr_desenvolvimento/jiratrelloautomation.git"
+  },
+  "author": "ICMC Jr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/icmcjr_desenvolvimento/jiratrelloautomation/issues"
+  },
+  "homepage": "https://gitlab.com/icmcjr_desenvolvimento/jiratrelloautomation#readme",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "esm": "^3.2.25",
+    "express": "^4.17.1"
+  }
+}
