@@ -26,7 +26,7 @@ var boardButtonCallback = function (t) {
             );
             if (response.data.redirect) {
               return tr
-                .set('board', 'private', 'redirecturl', response.data.redirect)
+                .set('board', 'private', 'redirecturl', response.data.url)
                 .then(() => {
                   return tr.popup({
                     title: 'Autorizar',
