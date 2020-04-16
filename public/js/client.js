@@ -12,11 +12,6 @@ var boardButtonCallback = function (t) {
     title: 'Jira Sync',
     items: [
       {
-        text: 'Sei lá',
-        icon: GRAY_ICON,
-        callback: (tr) => tr.popup({ url: 'https://google.com' }),
-      },
-      {
         text: 'Sincronizar últimas tarefas',
         icon: GRAY_ICON,
         callback: async (tr) => {
@@ -30,11 +25,15 @@ var boardButtonCallback = function (t) {
               )}?project="${savedProject}"&lastUpdated=${lastUpdated}`
             );
             if (response.data.redirect) {
-              return tr.popup({
-                title: 'Settings',
-                url: './settings.html',
-                height: 164,
-              });
+              return tr
+                .set('board', 'private', 'redirecturl', response.data.redirect)
+                .then(() => {
+                  return tr.popup({
+                    title: 'Settings',
+                    url: './authori.html',
+                    height: 164,
+                  });
+                });
             }
             console.log(response.data);
           } catch (err) {
@@ -48,7 +47,7 @@ var boardButtonCallback = function (t) {
         callback: (tr) =>
           tr.popup({
             // Callback to be called when user clicks the action button.
-            title: 'Settings',
+            title: 'Configurações',
             url: './settings.html',
             height: 164,
           }),
