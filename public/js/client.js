@@ -62,11 +62,11 @@ var boardButtonCallback = function (t) {
                   });
                 });
             }
+            console.log(response.data);
             const apiKey = 'ebb9bec74b8c5f3fc92e50792f84aca3';
             return tr
               .set('board', 'shared', 'lastUpdated', Date.now())
               .then(async () => {
-                console.log(response.data);
                 const response = await axios.get(
                   `https://api.trello.com/1/members/me/boards?key=${apiKey}&token=${token}`
                 );
