@@ -29,8 +29,8 @@ var boardButtonCallback = function (t) {
                 .set('board', 'private', 'redirecturl', response.data.redirect)
                 .then(() => {
                   return tr.popup({
-                    title: 'Settings',
-                    url: './authori.html',
+                    title: 'Autorizar',
+                    url: './authorize_jira.html',
                     height: 164,
                   });
                 });
