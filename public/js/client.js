@@ -86,19 +86,21 @@ var boardButtonCallback = function (t) {
                 );
               });
 
-              Promise.all(promises).then((results) => {
-                return tr
-                  .set('board', 'shared', 'lastUpdated', Date.now())
-                  .then(async () => {
+              Promise.all(promises)
+                .then((results) => {
+                  return tr
+                    .set('board', 'shared', 'lastUpdated', Date.now())
+                    .then(() => {
+                      return tr.closePopup();
+                    });
+                })
+                .catch((err) => {
+                  //// TOKEN EXPIRED
+                  return tr.set('member', 'private', 'token', null).then(() => {
                     return tr.closePopup();
                   });
-              });
+                });
             });
-
-            // const response = await axios.get(
-            //   `https://api.trello.com/1/members/me/boards?key=${apiKey}&token=${token}`
-            // );
-            // console.log(response);
           } catch (err) {
             alert('Erro ao carregar!');
             return tr.closePopup();
