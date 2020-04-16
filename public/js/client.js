@@ -67,7 +67,7 @@ var boardButtonCallback = function (t) {
 
             return tr.lists('all').then((lists) => {
               const filteredLists = lists.filter(
-                (list) => lists.name.toLowerCase() === 'sprint backlog'
+                (list) => list.name.toLowerCase() === 'sprint backlog'
               );
 
               if (filteredLists.length === 0) {
