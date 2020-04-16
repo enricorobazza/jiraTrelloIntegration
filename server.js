@@ -98,8 +98,6 @@ app.get('/token/:link', async (req, res) => {
   }
 });
 
-app.get('/authenticate', async (req, res) => {});
-
 app.get('/store', async (req, res) => {
   if (!req.query.code || !req.query.state)
     return res.status(404).send('Invalid parameters');
@@ -116,14 +114,14 @@ app.get('/store', async (req, res) => {
         redirect_uri: 'https://jiratrellointegration.herokuapp.com/store',
       }
     );
-
     const token = response.data['access_token'];
     console.log('Got authorization token, inserting to workspace.');
-    const workspace = await WorkspaceRepository.addTokenToWorkspace(
-      req.query.state,
-      token
+    await WorkspaceRepository.addTokenToWorkspace(req.query.state, token);
+    const workspace = await WorkspaceRepository.findWorkspaceById(
+      req.query.state
     );
-    return res.status(200).send(workspace);
+    if (workspace) return res.redirect(workspace.url);
+    return res.status(404).send('Workspace not found!!');
   } catch (err) {
     console.log('Got the incorrect code!!!');
     return res.status(404).send('Code incorrect!');

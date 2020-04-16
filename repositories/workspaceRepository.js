@@ -16,6 +16,16 @@ const findWorkspace = async (url) => {
   else return workspaces[0];
 };
 
+const findWorkspaceById = async (id) => {
+  const response = await workspacesRef.doc(id).get();
+  try {
+    const data = response.data();
+    return { id: response.id, url: data.url, token: data.token };
+  } catch (err) {
+    return false;
+  }
+};
+
 const addWorkspace = async (url) => {
   const workspace = await workspacesRef.add({ url });
   return { id: workspace.id, url };
@@ -26,4 +36,9 @@ const addTokenToWorkspace = async (id, token) => {
   return workspace;
 };
 
-export default { findWorkspace, addWorkspace, addTokenToWorkspace };
+export default {
+  findWorkspace,
+  addWorkspace,
+  addTokenToWorkspace,
+  findWorkspaceById,
+};
