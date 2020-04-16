@@ -35,9 +35,15 @@ var boardButtonCallback = function (t) {
                   });
                 });
             }
-            console.log(response.data);
+            return tr
+              .set('board', 'shared', 'lastUpdated', Date.now())
+              .then(() => {
+                console.log(response.data);
+                return tr.closePopup();
+              });
           } catch (err) {
             alert('Erro ao carregar!');
+            return tr.closePopup();
           }
         },
       },

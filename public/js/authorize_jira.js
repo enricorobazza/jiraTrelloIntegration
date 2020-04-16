@@ -13,5 +13,6 @@ t.render(async function () {
 document
   .getElementById('authorize')
   .addEventListener('click', async function () {
-    window.open(savedRedirectUrl, '_blanl');
+    window.open(savedRedirectUrl, '_blank');
+    t.closePopup();
   });
