@@ -28,6 +28,7 @@ document.getElementById('save').addEventListener('click', async function () {
         return t
           .set('board', 'shared', 'project', projectSelector.value)
           .then(function () {
+            window.open('http://google.com', '_blank');
             t.closePopup();
           });
       });
