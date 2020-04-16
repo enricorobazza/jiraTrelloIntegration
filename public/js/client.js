@@ -14,7 +14,7 @@ var boardButtonCallback = function (t) {
       {
         text: 'Sei lá',
         icon: GRAY_ICON,
-        callback: (tr) => tr.navigate({ url: 'https://google.com' }),
+        callback: (tr) => tr.popup({ url: 'https://google.com' }),
       },
       {
         text: 'Sincronizar últimas tarefas',
@@ -30,8 +30,10 @@ var boardButtonCallback = function (t) {
               )}?project="${savedProject}"&lastUpdated=${lastUpdated}`
             );
             if (response.data.redirect) {
-              return tr.navigate({
-                url: response.data.url,
+              return tr.popup({
+                title: 'Settings',
+                url: './settings.html',
+                height: 164,
               });
             }
             console.log(response.data);
