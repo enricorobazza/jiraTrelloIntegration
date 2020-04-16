@@ -65,22 +65,25 @@ var boardButtonCallback = function (t) {
             const issues = response.data;
             const apiKey = 'ebb9bec74b8c5f3fc92e50792f84aca3';
 
+            return tr.lists('all').then((lists) => {
+              console.log(JSON.stringify(lists, null, 2));
+              // return tr
+              // .set('board', 'shared', 'lastUpdated', Date.now())
+              // .then(async () => {
+              //   return tr.closePopup();
+              // });
+            });
+
             issues.forEach((issue) => {
-              axios.post(
-                `https://api.trello.com/1/cards?key=${apiKey}&token=${token}&name="[${issue.key}] ${issue.title}"&pos=top&idList=tn1oPQ9x`
-              );
+              // axios.post(
+              //   `https://api.trello.com/1/cards?key=${apiKey}&token=${token}&name="[${issue.key}] ${issue.title}"&pos=top&idList=tn1oPQ9x`
+              // );
             });
 
             // const response = await axios.get(
             //   `https://api.trello.com/1/members/me/boards?key=${apiKey}&token=${token}`
             // );
             // console.log(response);
-
-            return tr
-              .set('board', 'shared', 'lastUpdated', Date.now())
-              .then(async () => {
-                return tr.closePopup();
-              });
           } catch (err) {
             alert('Erro ao carregar!');
             return tr.closePopup();
