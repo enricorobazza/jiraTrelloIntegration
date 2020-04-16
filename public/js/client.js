@@ -7,6 +7,29 @@ var GRAY_ICON =
 var WHITE_ICON =
   'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-white.svg';
 
+var showAuthorization = (t, options) => {
+  // Returns what to do when a user clicks the 'Authorize Account' link from the Power-Up gear icon
+  // which shows when 'authorization-status' returns { authorized: false }.
+
+  // If we want to ask the user to authorize our Power-Up to make full use of the Trello API
+  // you'll need to add your API from trello.com/app-key below:
+  let trelloAPIKey = 'ebb9bec74b8c5f3fc92e50792f84aca3';
+  // This key will be used to generate a token that you can pass along with the API key to Trello's
+  // RESTful API. Using the key/token pair, you can make requests on behalf of the authorized user.
+
+  // In this case we'll open a popup to kick off the authorization flow.
+  if (trelloAPIKey) {
+    return t.popup({
+      title: 'My Auth Popup',
+      args: { apiKey: trelloAPIKey }, // Pass in API key to the iframe
+      url: './authorize.html', // Check out public/authorize.html to see how to ask a user to auth
+      height: 180,
+    });
+  } else {
+    console.log('🙈 Looks like you need to add your API key to the project!');
+  }
+};
+
 var boardButtonCallback = function (t) {
   return t.popup({
     title: 'Jira Sync',
@@ -15,6 +38,10 @@ var boardButtonCallback = function (t) {
         text: 'Sincronizar últimas tarefas',
         icon: GRAY_ICON,
         callback: async (tr) => {
+          const token = await tr.get('member', 'private', 'token');
+
+          if (!token) return showAuthorization(tr);
+
           const savedLink = await t.get('board', 'shared', 'link');
           const savedProject = await t.get('board', 'shared', 'project');
           const lastUpdated = await t.get('board', 'shared', 'lastUpdated');
@@ -35,10 +62,16 @@ var boardButtonCallback = function (t) {
                   });
                 });
             }
+            const apiKey = 'ebb9bec74b8c5f3fc92e50792f84aca3';
             return tr
               .set('board', 'shared', 'lastUpdated', Date.now())
-              .then(() => {
+              .then(async () => {
                 console.log(response.data);
+                const response = await axios.get(
+                  `https://api.trello.com/1/members/me/boards?key=${apiKey}&token=${token}`
+                );
+                console.log(response);
+
                 return tr.closePopup();
               });
           } catch (err) {
@@ -123,30 +156,7 @@ TrelloPowerUp.initialize(
       );
       // You can also return the object synchronously if you know the answer synchronously.
     },
-    'show-authorization': function (t, options) {
-      // Returns what to do when a user clicks the 'Authorize Account' link from the Power-Up gear icon
-      // which shows when 'authorization-status' returns { authorized: false }.
-
-      // If we want to ask the user to authorize our Power-Up to make full use of the Trello API
-      // you'll need to add your API from trello.com/app-key below:
-      let trelloAPIKey = 'ebb9bec74b8c5f3fc92e50792f84aca3';
-      // This key will be used to generate a token that you can pass along with the API key to Trello's
-      // RESTful API. Using the key/token pair, you can make requests on behalf of the authorized user.
-
-      // In this case we'll open a popup to kick off the authorization flow.
-      if (trelloAPIKey) {
-        return t.popup({
-          title: 'My Auth Popup',
-          args: { apiKey: trelloAPIKey }, // Pass in API key to the iframe
-          url: './authorize.html', // Check out public/authorize.html to see how to ask a user to auth
-          height: 140,
-        });
-      } else {
-        console.log(
-          '🙈 Looks like you need to add your API key to the project!'
-        );
-      }
-    },
+    'show-authorization': showAuthorization,
   },
   {
     appKey: 'your_key_here',
