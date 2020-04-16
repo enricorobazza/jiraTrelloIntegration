@@ -24,7 +24,7 @@
 
       //trello.com/1/authorize?expiration=1hour&name=Example%20Trello%20Power-Up&scope=read&key=ebb9bec74b8c5f3fc92e50792f84aca3&callback_method=fragment
 
-      https: var trelloAuthUrl = `https://trello.com/1/authorize?name=Example%20Trello%20Power-Up&scope=read&key=${apiKey}&callback_method=fragment&return_url=${window.location.origin}/auth-success.html`;
+      https: var trelloAuthUrl = `https://trello.com/1/authorize?name=ICMC%20Jr%20Jira%20Integration&scope="read,write"&expiration=never&key=${apiKey}&callback_method=fragment&return_url=${window.location.origin}/auth-success.html`;
 
       var tokenLooksValid = function (token) {
         // If this returns false, the Promise won't resolve.
