@@ -79,18 +79,20 @@ var boardButtonCallback = function (t) {
 
               const promises = [];
               issues.forEach((issue) => {
-                promises.push(axios.post(
-                  `https://api.trello.com/1/cards?key=${apiKey}&token=${token}&name="[${issue.key}] ${issue.title}"&pos=top&idList=${sprintBacklogList.id}`
-                ));
+                promises.push(
+                  axios.post(
+                    `https://api.trello.com/1/cards?key=${apiKey}&token=${token}&name="[${issue.key}] ${issue.title}"&pos=top&idList=${sprintBacklogList.id}`
+                  )
+                );
               });
 
-              const result = await Promise.all(promises);
-
-              return tr
-                .set('board', 'shared', 'lastUpdated', Date.now())
-                .then(async () => {
-                  return tr.closePopup();
-                });
+              Promise.all(promises).then((results) => {
+                return tr
+                  .set('board', 'shared', 'lastUpdated', Date.now())
+                  .then(async () => {
+                    return tr.closePopup();
+                  });
+              });
             });
 
             // const response = await axios.get(
