@@ -62,16 +62,23 @@ var boardButtonCallback = function (t) {
                   });
                 });
             }
-            console.log(response.data);
+            const issues = response.data;
             const apiKey = 'ebb9bec74b8c5f3fc92e50792f84aca3';
+
+            issues.forEach((issue) => {
+              axios.post(
+                `https://api.trello.com/1/cards?key=${apiKey}&token=${token}&name="[${issue.key}] ${issue.title}"&pos=top&idList=1`
+              );
+            });
+
+            // const response = await axios.get(
+            //   `https://api.trello.com/1/members/me/boards?key=${apiKey}&token=${token}`
+            // );
+            // console.log(response);
+
             return tr
               .set('board', 'shared', 'lastUpdated', Date.now())
               .then(async () => {
-                const response = await axios.get(
-                  `https://api.trello.com/1/members/me/boards?key=${apiKey}&token=${token}`
-                );
-                console.log(response);
-
                 return tr.closePopup();
               });
           } catch (err) {
