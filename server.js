@@ -4,7 +4,7 @@ import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
 import axios from 'axios';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import WorkspaceRepository from './repositories/workspaceRepository';
 
 const app = express();
@@ -71,7 +71,9 @@ app.get('/token/:link', async (req, res) => {
 
   //// SE FOI FORNECIDA UMA ÚLTIMA DATA
   if (lastUpdated) {
-    let date = moment(parseFloat(lastUpdated)).format('YYYY/MM/DD HH:mm');
+    let date = moment(parseFloat(lastUpdated))
+      .tz('America/Sao_Paulo')
+      .format('YYYY/MM/DD HH:mm');
     endpoint += ` and created>="${date}"`;
   }
 
