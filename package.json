@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node -r esm server.js"
+    "start": "node -r esm server.js",
+    "dev": "nodemon -r esm server.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,8 @@
     "express": "^4.17.1",
     "firebase-admin": "^8.10.0",
     "moment": "^2.24.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
   }
 }

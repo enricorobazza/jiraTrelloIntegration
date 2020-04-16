@@ -30,7 +30,7 @@ app.get('/token/:link', async (req, res) => {
 
   if (!workspace.token) {
     /////// NÃO CADASTRADO, TEM QUE REDIRECIONAR PRA PEGAR AUTORIZAÇÃO E DEPOIS RETORNAR
-    const url = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2Fauthenticate&state=${workspace.id}&response_type=code&prompt=consent`;
+    const url = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%store&state=${workspace.id}&response_type=code&prompt=consent`;
     return res.status(200).send({ redirect: true, url });
   }
 
@@ -57,7 +57,7 @@ app.get('/token/:link', async (req, res) => {
   if (!project) return res.status(404).send('No project');
 
   //// ENDPOINT PARA PEGAR AS SUBTASKS
-  let endpoint = `https://api.atlassian.com/ex/jira/${id}/rest/api/3/search?jql=project="${project}"%20and%20issuetype="Subtarefa"`;
+  let endpoint = `https://api.atlassian.com/ex/jira/${id}/rest/api/3/search?jql=project=${project}%20and%20issuetype="Subtarefa"`;
 
   //// SE FOI FORNECIDA UMA ÚLTIMA DATA
   if (lastUpdated) {
@@ -73,13 +73,22 @@ app.get('/token/:link', async (req, res) => {
         Accept: 'application/json',
       },
     });
-    return res.status(200).send(response.data);
+    // return res.status(200).send(response.data);
+    const issues = response.data.issues.map((issue) => ({
+      key: issue.key,
+      title: issue.fields.summary,
+    }));
+    return res.status(200).send(issues);
   } catch (err) {
+    // console.log(err);
+    console.log(err.response.data.errorMessages);
     return res.status(404).send('Load data error.');
   }
 });
 
-app.get('/authenticate', async (req, res) => {
+app.get('/authenticate', async (req, res) => {});
+
+app.get('/store', async (req, res) => {
   if (!req.query.code || !req.query.state)
     return res.status(404).send('Invalid parameters');
 
@@ -92,8 +101,7 @@ app.get('/authenticate', async (req, res) => {
         client_secret:
           'vh34u1Ln5Wx1WTdicPgx7AzI2WcBWT1qA066e4Z8j12FMBihEHRCyF1TccK3oa_1',
         code: req.query.code,
-        redirect_uri:
-          'https://jiratrellointegration.herokuapp.com/authenticate',
+        redirect_uri: 'https://jiratrellointegration.herokuapp.com/store',
       }
     );
 
