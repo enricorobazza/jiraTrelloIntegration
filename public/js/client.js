@@ -66,18 +66,27 @@ var boardButtonCallback = function (t) {
             const apiKey = 'ebb9bec74b8c5f3fc92e50792f84aca3';
 
             return tr.lists('all').then((lists) => {
-              console.log(JSON.stringify(lists, null, 2));
-              // return tr
-              // .set('board', 'shared', 'lastUpdated', Date.now())
-              // .then(async () => {
-              //   return tr.closePopup();
-              // });
-            });
+              const filteredLists = lists.filter(
+                (list) => lists.name.toLowerCase() === 'sprint backlog'
+              );
 
-            issues.forEach((issue) => {
-              // axios.post(
-              //   `https://api.trello.com/1/cards?key=${apiKey}&token=${token}&name="[${issue.key}] ${issue.title}"&pos=top&idList=tn1oPQ9x`
-              // );
+              if (filteredLists.length === 0) {
+                alert('Crie uma lista chamada Sprint Backlog!!');
+                return tr.closePopup();
+              }
+
+              const sprintBacklogList = filteredLists[0];
+
+              issues.forEach((issue) => {
+                axios.post(
+                  `https://api.trello.com/1/cards?key=${apiKey}&token=${token}&name="[${issue.key}] ${issue.title}"&pos=top&idList=${sprintBacklogList.id}`
+                );
+              });
+              return tr
+                .set('board', 'shared', 'lastUpdated', Date.now())
+                .then(async () => {
+                  return tr.closePopup();
+                });
             });
 
             // const response = await axios.get(
