@@ -26,11 +26,19 @@ app.get('/token/:link', async (req, res) => {
   let workspace = await WorkspaceRepository.findWorkspace(link);
 
   /// CRIA O WORKSPACE NO FIRESTORE SEM TOKEN
-  if (!workspace) workspace = await WorkspaceRepository.addWorkspace(link);
+  if (!workspace) {
+    workspace = await WorkspaceRepository.addWorkspace(link);
+    console.log('Created workspace', workspace);
+  } else
+    console.log('Found workspace: ', {
+      id: workspace.id,
+      url: workspace.url,
+    });
 
   if (!workspace.token) {
     /////// NÃO CADASTRADO, TEM QUE REDIRECIONAR PRA PEGAR AUTORIZAÇÃO E DEPOIS RETORNAR
     const url = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%store&state=${workspace.id}&response_type=code&prompt=consent`;
+    console.log('No token, redirect to: ', url);
     return res.status(200).send({ redirect: true, url });
   }
 
@@ -50,6 +58,7 @@ app.get('/token/:link', async (req, res) => {
   } catch (err) {
     ///// TOKEN EXPIROU, ABRIR PARA PEGAR AUTORIZAÇÃO E DEPOIS RETORNAR
     const url = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2Fauthenticate&state=${workspace.id}&response_type=code&prompt=consent`;
+    console.log('Token expired, redirect to: ', url);
     return res.status(200).send({ redirect: true, url });
   }
 
@@ -57,13 +66,15 @@ app.get('/token/:link', async (req, res) => {
   if (!project) return res.status(404).send('No project');
 
   //// ENDPOINT PARA PEGAR AS SUBTASKS
-  let endpoint = `https://api.atlassian.com/ex/jira/${id}/rest/api/3/search?jql=project=${project}%20and%20issuetype="Subtarefa"`;
+  let endpoint = `https://api.atlassian.com/ex/jira/${id}/rest/api/3/search?jql=project=${project} and issuetype="Subtarefa"`;
 
   //// SE FOI FORNECIDA UMA ÚLTIMA DATA
   if (lastUpdated) {
-    let date = moment.unix(lastUpdated).format('YYYY/MM/DD HH:mm:ss');
-    endpoint += `%20and%20created&gt;="${date}"`;
+    let date = moment(parseFloat(lastUpdated)).format('YYYY/MM/DD HH:mm');
+    endpoint += ` and created>="${date}"`;
   }
+
+  console.log('Hitting endpoint to get data: ', endpoint);
 
   try {
     //// PEGA AS SUBTASKS
@@ -78,10 +89,10 @@ app.get('/token/:link', async (req, res) => {
       key: issue.key,
       title: issue.fields.summary,
     }));
+    console.log('Returning issues!!!');
     return res.status(200).send(issues);
   } catch (err) {
-    // console.log(err);
-    console.log(err.response.data.errorMessages);
+    console.log(err.response.data);
     return res.status(404).send('Load data error.');
   }
 });
@@ -106,12 +117,14 @@ app.get('/store', async (req, res) => {
     );
 
     const token = response.data['access_token'];
+    console.log('Got authorization token, inserting to workspace.');
     const workspace = await WorkspaceRepository.addTokenToWorkspace(
       req.query.state,
       token
     );
     return res.status(200).send(workspace);
   } catch (err) {
+    console.log('Got the incorrect code!!!');
     return res.status(404).send('Code incorrect!');
   }
 });
