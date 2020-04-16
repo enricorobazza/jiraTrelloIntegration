@@ -67,7 +67,7 @@ var boardButtonCallback = function (t) {
 
             issues.forEach((issue) => {
               axios.post(
-                `https://api.trello.com/1/cards?key=${apiKey}&token=${token}&name="[${issue.key}] ${issue.title}"&pos=top&idList=1`
+                `https://api.trello.com/1/cards?key=${apiKey}&token=${token}&name="[${issue.key}] ${issue.title}"&pos=top&idList=tn1oPQ9x`
               );
             });
 
