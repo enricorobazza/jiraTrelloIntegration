@@ -96,8 +96,9 @@ var boardButtonCallback = function (t) {
                 })
                 .catch((err) => {
                   //// TOKEN EXPIRED
+                  alert('Por favor recarregue a página e autorize o power up.');
                   return tr.set('member', 'private', 'token', null).then(() => {
-                    return tr.closePopup();
+                    return showAuthorization();
                   });
                 });
             });
