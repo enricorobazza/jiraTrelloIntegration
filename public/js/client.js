@@ -180,15 +180,15 @@ TrelloPowerUp.initialize(
         .get('id')
         .then(async function (cardId) {
           const sp = await t.get('board', 'shared', cardId); // STORY POINTS
-          if (sp)
+          if (sp) {
             let color;
-            if(sp == 1) color = 'green';
-            else if(sp == 2) color = 'sky';
-            else if(sp == 3) color = 'blue';
-            else if(sp == 5) color = 'purple';
-            else if(sp == 8) color = 'yellow';
-            else if(sp == 13) color = 'orange';
-            else if(sp == 21) color = 'red';
+            if (sp == 1) color = 'green';
+            else if (sp == 2) color = 'sky';
+            else if (sp == 3) color = 'blue';
+            else if (sp == 5) color = 'purple';
+            else if (sp == 8) color = 'yellow';
+            else if (sp == 13) color = 'orange';
+            else if (sp == 21) color = 'red';
             return [
               {
                 // It's best to use static badges unless you need your
@@ -196,10 +196,10 @@ TrelloPowerUp.initialize(
                 // You can mix and match between static and dynamic
                 text: `${sp}`,
                 icon: LAMP_ICON, // for card front badges only
-                color: 'blue',
+                color,
               },
             ];
-          else return [];
+          } else return [];
         });
     },
 
