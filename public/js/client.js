@@ -179,14 +179,22 @@ TrelloPowerUp.initialize(
         .card('id')
         .get('id')
         .then(async function (cardId) {
-          const storyPoints = await t.get('board', 'shared', cardId);
-          if (storyPoints)
+          const sp = await t.get('board', 'shared', cardId); // STORY POINTS
+          if (sp)
+            let color;
+            if(sp == 1) color = 'green';
+            else if(sp == 2) color = 'sky';
+            else if(sp == 3) color = 'blue';
+            else if(sp == 5) color = 'purple';
+            else if(sp == 8) color = 'yellow';
+            else if(sp == 13) color = 'orange';
+            else if(sp == 21) color = 'red';
             return [
               {
                 // It's best to use static badges unless you need your
                 // badges to refresh.
                 // You can mix and match between static and dynamic
-                text: `CARD ID: ${cardId}`,
+                text: `${sp}`,
                 icon: LAMP_ICON, // for card front badges only
                 color: 'blue',
               },
