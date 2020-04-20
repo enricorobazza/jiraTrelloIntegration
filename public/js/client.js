@@ -160,7 +160,12 @@ TrelloPowerUp.initialize(
               .card('id')
               .get('id')
               .then((id) => {
-                alert(id);
+                return tr.popup({
+                  title: 'Story Points',
+                  args: { id }, // Pass in API key to the iframe
+                  url: './storypoints.html', // Check out public/authorize.html to see how to ask a user to auth
+                  height: 180,
+                });
               });
           },
           condition: 'edit',
