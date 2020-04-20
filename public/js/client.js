@@ -179,7 +179,7 @@ TrelloPowerUp.initialize(
               // You can mix and match between static and dynamic
               text: 'Static',
               icon: LAMP_ICON, // for card front badges only
-              color: blue,
+              color: 'blue',
             },
           ];
         });
