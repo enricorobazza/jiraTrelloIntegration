@@ -42,6 +42,12 @@ var boardButtonCallback = function (t) {
           const savedLink = await t.get('board', 'shared', 'link');
           const savedProject = await t.get('board', 'shared', 'project');
           const lastUpdated = await t.get('board', 'shared', 'lastUpdated');
+
+          if (!savedLink || !savedProject || !lastUpdated) {
+            alert('Configure com os dados do JIRA!!');
+            return tr.closePopup();
+          }
+
           try {
             const response = await axios.get(
               `https://jiratrellointegration.herokuapp.com/token/${encodeURIComponent(
