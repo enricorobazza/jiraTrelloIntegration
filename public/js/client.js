@@ -1,8 +1,7 @@
 var Promise = TrelloPowerUp.Promise;
 
-var GRAY_ICON =
-  'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
 var LAMP_ICON = './resources/lamp.svg';
+var TIME_ICON = './resources/time.svg';
 
 var showAuthorization = (t, options) => {
   // Returns what to do when a user clicks the 'Authorize Account' link from the Power-Up gear icon
@@ -153,7 +152,7 @@ TrelloPowerUp.initialize(
         {
           // usually you will provide a callback function to be run on button click
           // we recommend that you use a popup on click generally
-          icon: LAMP_ICON, // don't use a colored icon here
+          icon: TIME_ICON, // don't use a colored icon here
           text: 'Story Points',
           callback: (tr) => {
             return tr
@@ -195,7 +194,7 @@ TrelloPowerUp.initialize(
                 // badges to refresh.
                 // You can mix and match between static and dynamic
                 text: `${sp}`,
-                icon: LAMP_ICON, // for card front badges only
+                icon: TIME_ICON, // for card front badges only
                 color,
               },
             ];
