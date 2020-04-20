@@ -1,11 +1,8 @@
 var Promise = TrelloPowerUp.Promise;
 
-var GLITCH_ICON =
-  'https://cdn.glitch.com/2442c68d-7b6d-4b69-9d13-feab530aa88e%2Fglitch-icon.svg?1489773457908';
 var GRAY_ICON =
   'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg';
-var WHITE_ICON =
-  'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-white.svg';
+var LAMP_ICON = './resources/lamp.svg';
 
 var showAuthorization = (t, options) => {
   // Returns what to do when a user clicks the 'Authorize Account' link from the Power-Up gear icon
@@ -20,7 +17,7 @@ var showAuthorization = (t, options) => {
   // In this case we'll open a popup to kick off the authorization flow.
   if (trelloAPIKey) {
     return t.popup({
-      title: 'My Auth Popup',
+      title: 'Autorizar',
       args: { apiKey: trelloAPIKey }, // Pass in API key to the iframe
       url: './authorize.html', // Check out public/authorize.html to see how to ask a user to auth
       height: 180,
@@ -36,7 +33,7 @@ var boardButtonCallback = function (t) {
     items: [
       {
         text: 'Sincronizar últimas tarefas',
-        icon: GRAY_ICON,
+        icon: LAMP_ICON,
         callback: async (tr) => {
           const token = await tr.get('member', 'private', 'token');
 
@@ -110,7 +107,7 @@ var boardButtonCallback = function (t) {
       },
       {
         text: 'Configurações',
-        icon: GRAY_ICON,
+        icon: LAMP_ICON,
         callback: (tr) =>
           tr.popup({
             // Callback to be called when user clicks the action button.
@@ -134,7 +131,7 @@ TrelloPowerUp.initialize(
         {
           // we can either provide a button that has a callback function
           // that callback function should probably open a popup, overlay, or boardBar
-          icon: WHITE_ICON,
+          icon: LAMP_ICON,
           text: 'Jira Sync',
           condition: 'always',
           callback: boardButtonCallback,
@@ -146,7 +143,7 @@ TrelloPowerUp.initialize(
       // what should Trello show. We highly recommend the popup in this case as
       // it is the least disruptive, and fits in well with the rest of Trello's UX
       return t.popup({
-        title: 'Settings',
+        title: 'Configurações',
         url: './settings.html',
         height: 184, // we can always resize later, but if we know the size in advance, its good to tell Trello
       });
