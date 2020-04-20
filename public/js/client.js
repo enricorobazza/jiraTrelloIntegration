@@ -2,6 +2,7 @@ var Promise = TrelloPowerUp.Promise;
 
 var LAMP_ICON = './resources/lamp.svg';
 var TIME_ICON = './resources/time.svg';
+var JIRA_ICON = './resources/jira.svg';
 
 var showAuthorization = (t, options) => {
   // Returns what to do when a user clicks the 'Authorize Account' link from the Power-Up gear icon
@@ -130,7 +131,7 @@ TrelloPowerUp.initialize(
         {
           // we can either provide a button that has a callback function
           // that callback function should probably open a popup, overlay, or boardBar
-          icon: LAMP_ICON,
+          icon: JIRA_ICON,
           text: 'Jira Sync',
           condition: 'always',
           callback: boardButtonCallback,
