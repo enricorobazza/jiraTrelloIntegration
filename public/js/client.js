@@ -150,13 +150,18 @@ TrelloPowerUp.initialize(
     // },
 
     'card-badges': function (t, opts) {
-      return [
-        {
-          text: 'MEU BADGE',
-          icon: LAMP_ICON,
-          color: null,
-        },
-      ];
+      return t
+        .card('name')
+        .get('name')
+        .then((cardName) => {
+          return [
+            {
+              text: `CARD: ${cardName}`,
+              icon: LAMP_ICON,
+              color: blue,
+            },
+          ];
+        });
     },
 
     /*        
