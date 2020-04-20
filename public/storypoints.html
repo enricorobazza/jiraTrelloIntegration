@@ -4,31 +4,31 @@
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
     <style>
       #one{
-        background-color: #2ecc71;
+        background-color: #02c751;
       }
 
       #two{
-        background-color: #1abc9c;
+        background-color: #00c5e4;
       }
 
       #three{
-        background-color: #3498db;
+        background-color: #0075c2;
       }
 
       #five{
-        background-color: #9b59b6;
+        background-color: #d560e1;
       }
 
       #eight{
-        background-color: #f1c40f;
+        background-color: #f3dc00;
       }
 
       #thirteen{
-        background-color: #e67e22;
+        background-color: #ff9c00;
       }
 
       #twentyone{
-        background-color: #e74c3c;
+        background-color: #ff442f;
       }
 
     </style>
@@ -49,7 +49,11 @@
       var Promise = TrelloPowerUp.Promise;
       var t = TrelloPowerUp.iframe();
 
-      var id = t.arg('id'); // Passed in as an argument to our iframe
+      t.render(async function () {
+        t.sizeTo('#content').done();
+      });
+
+      const id = t.arg('id'); // Passed in as an argument to our iframe
 
       const setStoryPoint = (points) => {
         return t.set('board', 'shared', id, points).then(() => {
