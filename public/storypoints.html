@@ -44,5 +44,27 @@
       <button id="twentyone" class="mod-primary">21</button>
     </div>
     <!-- <script src="./js/settings.js"></script> -->
+
+    <script>
+      var Promise = TrelloPowerUp.Promise;
+      var t = TrelloPowerUp.iframe();
+
+      var id = t.arg('id'); // Passed in as an argument to our iframe
+
+      const setStoryPoint = (points) => {
+        return t.set('board', 'shared', id, points).then(() => {
+          return t.closePopup();
+        })
+      }
+
+      document.getElementById('one').addEventListener('click', () => setStoryPoint(1));
+      document.getElementById('two').addEventListener('click', () => setStoryPoint(2));
+      document.getElementById('three').addEventListener('click', () => setStoryPoint(3));
+      document.getElementById('five').addEventListener('click', () => setStoryPoint(5));
+      document.getElementById('eight').addEventListener('click', () => setStoryPoint(8));
+      document.getElementById('thirteen').addEventListener('click', () => setStoryPoint(13));
+      document.getElementById('twentyone').addEventListener('click', () => setStoryPoint(21));
+
+    </script>
   </body>
 </html>
