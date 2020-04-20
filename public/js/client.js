@@ -148,24 +148,45 @@ TrelloPowerUp.initialize(
     //     height: 184, // we can always resize later, but if we know the size in advance, its good to tell Trello
     //   });
     // },
+    'card-buttons': function (t, opts) {
+      return [
+        {
+          // usually you will provide a callback function to be run on button click
+          // we recommend that you use a popup on click generally
+          icon: LAMP_ICON, // don't use a colored icon here
+          text: 'Story Points',
+          callback: (tr) => {
+            return tr
+              .card('id')
+              .get('id')
+              .then((id) => {
+                alert(id);
+              });
+          },
+          condition: 'edit',
+        },
+      ];
+    },
 
     'card-badges': function (t, opts) {
       let cardAttachments = opts.attachments; // Trello passes you the attachments on the card
       return t
         .card('id')
         .get('id')
-        .then(function (cardId) {
-          console.log('We just loaded the card name for fun: ' + cardId);
-          return [
-            {
-              // It's best to use static badges unless you need your
-              // badges to refresh.
-              // You can mix and match between static and dynamic
-              text: `CARD ID: ${cardId}`,
-              icon: LAMP_ICON, // for card front badges only
-              color: 'blue',
-            },
-          ];
+        .then(async function (cardId) {
+          const storyPoints = await t.get('board', 'shared', cardId);
+          if (storyPoints)
+            return [
+              {
+                // It's best to use static badges unless you need your
+                // badges to refresh.
+                // You can mix and match between static and dynamic
+                text: `CARD ID: ${cardId}`,
+                icon: LAMP_ICON, // for card front badges only
+                color: 'blue',
+              },
+            ];
+          else return [];
         });
     },
 
