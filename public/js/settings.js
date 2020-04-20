@@ -13,6 +13,7 @@ t.render(function () {
   ])
     .spread(function (savedLink, savedProject) {
       if (savedLink) linkSelector.value = savedLink;
+      else linkSelector.value = 'https://icmcjunior.atlassian.net/';
       if (savedProject) projectSelector.value = savedProject;
     })
     .then(function () {
