@@ -14,5 +14,5 @@ document
   .getElementById('authorize')
   .addEventListener('click', async function () {
     window.open(savedRedirectUrl, '_blank');
-    t.closePopup();
+    return t.closePopup();
   });
