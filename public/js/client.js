@@ -177,7 +177,7 @@ TrelloPowerUp.initialize(
               // It's best to use static badges unless you need your
               // badges to refresh.
               // You can mix and match between static and dynamic
-              text: 'Static',
+              text: `CARD: ${cardName}`,
               icon: LAMP_ICON, // for card front badges only
               color: 'blue',
             },
