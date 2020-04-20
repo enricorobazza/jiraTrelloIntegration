@@ -12,8 +12,8 @@ t.render(function () {
     t.get('board', 'shared', 'project'),
   ])
     .spread(function (savedLink, savedProject) {
-      linkSelector.value = savedLink;
-      projectSelector.value = savedProject;
+      if (savedLink) linkSelector.value = savedLink;
+      if (savedProject) projectSelector.value = savedProject;
     })
     .then(function () {
       t.sizeTo('#content').done();
