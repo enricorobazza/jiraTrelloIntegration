@@ -7,6 +7,8 @@ import axios from 'axios';
 import moment from 'moment-timezone';
 import WorkspaceRepository from './repositories/workspaceRepository';
 
+require('dotenv/config');
+
 const app = express();
 
 // compress our client side content before sending it over the wire
@@ -37,7 +39,7 @@ app.get('/token/:link', async (req, res) => {
 
   if (!workspace.token) {
     /////// NÃO CADASTRADO, TEM QUE REDIRECIONAR PRA PEGAR AUTORIZAÇÃO E DEPOIS RETORNAR
-    const url = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2Fstore&state=${workspace.id}&response_type=code&prompt=consent`;
+    const url = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=${process.env.CLIENT_ID}&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2Fstore&state=${workspace.id}&response_type=code&prompt=consent`;
     console.log('No token, redirect to: ', url);
     return res.status(200).send({ redirect: true, url });
   }
@@ -58,7 +60,7 @@ app.get('/token/:link', async (req, res) => {
   } catch (err) {
     ///// TOKEN EXPIROU, ABRIR PARA PEGAR AUTORIZAÇÃO E DEPOIS RETORNAR
 
-    const url = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2Fstore&state=${workspace.id}&response_type=code&prompt=consent`;
+    const url = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=${process.env.CLIENT_ID}&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=https%3A%2F%2Fjiratrellointegration.herokuapp.com%2Fstore&state=${workspace.id}&response_type=code&prompt=consent`;
     console.log('Token expired, redirect to: ', url);
     return res.status(200).send({ redirect: true, url });
   }
@@ -109,9 +111,8 @@ app.get('/store', async (req, res) => {
       'https://auth.atlassian.com/oauth/token',
       {
         grant_type: 'authorization_code',
-        client_id: 'vZt5e71iEcw45fesoHyBLBdzCe8Qpjc5',
-        client_secret:
-          'vh34u1Ln5Wx1WTdicPgx7AzI2WcBWT1qA066e4Z8j12FMBihEHRCyF1TccK3oa_1',
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
         code: req.query.code,
         redirect_uri: 'https://jiratrellointegration.herokuapp.com/store',
       }
