@@ -1,4 +1,5 @@
 node_modules
-database/**
-!database/index.jsx
+!database/
+database/*
+!database/index.js
 .env
